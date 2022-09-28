@@ -3,25 +3,24 @@ package com.mediapros.socialmed
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.mediapros.socialmed.home.controller.activities.HomeActivity
+import com.mediapros.socialmed.security.controller.activities.RegisterActivity
 import com.mediapros.socialmed.security.models.AuthenticateRequest
 import com.mediapros.socialmed.security.models.AuthenticateResponse
 import com.mediapros.socialmed.security.network.UserService
 import retrofit2.*
 
-class MainActivity : AppCompatActivity() {
+const val EXTRA_TOKEN = "com.mediapros.socialmed.token"
 
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val btLogin = findViewById<Button>(R.id.btLogin)
         val btRegister = findViewById<Button>(R.id.btRegister)
-
-        btLogin.setOnClickListener {
-            signIn()
-        }
 
         btRegister.setOnClickListener {
             register()
@@ -33,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun signIn() {
+    fun signIn(view: View) {
         val etEmail = findViewById<EditText>(R.id.etEmail)
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val retrofit = RetrofitBuilder.build()
@@ -49,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 response: Response<AuthenticateResponse>
             ) {
                 if (response.isSuccessful)
-                    Toast.makeText(this@MainActivity, response.body()!!.token, Toast.LENGTH_SHORT).show()
+                    goToHome(response.body()!!.token, view)
                 else
                     Toast.makeText(this@MainActivity, "Error al iniciar sesión", Toast.LENGTH_SHORT).show()
             }
@@ -59,5 +58,12 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    private fun goToHome(token: String, view: View) {
+        val intent = Intent(this, HomeActivity::class.java).apply {
+            putExtra(EXTRA_TOKEN, "Bearer $token")
+        }
+        startActivity(intent)
     }
 }

@@ -13,4 +13,6 @@
     <string name="specialist">Especialidad</string>
     <string name="workPlace">Lugar de trabajo</string>
     <string name="biography">Biografía</string>
+    <string name="doc_pic">Doc pic</string>
+    <string name="doctores_recomendados">Doctores recomendados</string>
 </resources>
