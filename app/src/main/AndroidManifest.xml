@@ -4,7 +4,7 @@
     package="com.mediapros.socialmed">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +17,10 @@
         android:theme="@style/Theme.SocialMed"
         tools:targetApi="31">
         <activity
-            android:name=".RegisterActivity"
+            android:name=".home.controller.activities.HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".security.controller.activities.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
