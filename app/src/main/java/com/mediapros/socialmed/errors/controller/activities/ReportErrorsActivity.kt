@@ -5,10 +5,11 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.mediapros.socialmed.EXTRA_TOKEN
-import com.mediapros.socialmed.EXTRA_USER_ID
+/*import com.mediapros.socialmed.EXTRA_TOKEN
+import com.mediapros.socialmed.EXTRA_USER_ID*/
 import com.mediapros.socialmed.R
 import com.mediapros.socialmed.RetrofitBuilder
+import com.mediapros.socialmed.StateManager
 import com.mediapros.socialmed.errors.models.Report
 import com.mediapros.socialmed.errors.models.SaveReportResource
 import com.mediapros.socialmed.errors.network.ReportService
@@ -33,8 +34,10 @@ class ReportErrorsActivity : AppCompatActivity() {
         val etReportTitle = findViewById<EditText>(R.id.etReportTitle)
         val etReportContent = findViewById<EditText>(R.id.etReportContent)
         //val date = LocalDateTime.now()
-        val userId = intent.getStringExtra(EXTRA_USER_ID)!!.toInt()
-        val token = intent.getStringExtra(EXTRA_TOKEN)!!
+        /*val userId = intent.getStringExtra(EXTRA_USER_ID)!!.toInt()
+        val token = intent.getStringExtra(EXTRA_TOKEN)*/
+        val userId = StateManager.userId
+        val token = StateManager.authToken
 
         val retrofit = RetrofitBuilder.build()
 
@@ -47,13 +50,17 @@ class ReportErrorsActivity : AppCompatActivity() {
                 etReportTitle.text.toString(),
                 etReportContent.text.toString(),
                 dateExample,
-                userId), token)
+                userId), token!!)
 
         request.enqueue(object : Callback<Report>{
             override fun onResponse(call: Call<Report>, response: Response<Report>) {
-                Toast.makeText(this@ReportErrorsActivity, "Reporte enviado. Gracias.", Toast.LENGTH_SHORT).show()
-                Toast.makeText(this@ReportErrorsActivity, response.body()!!.title, Toast.LENGTH_SHORT).show()
-                //finish()
+                if (response.isSuccessful) {
+                    Toast.makeText(this@ReportErrorsActivity, "Reporte enviado. Gracias.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ReportErrorsActivity, response.body()!!.title, Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                else
+                    Toast.makeText(this@ReportErrorsActivity, "Error al enviar reporte.", Toast.LENGTH_SHORT).show()
             }
 
             override fun onFailure(call: Call<Report>, t: Throwable) {

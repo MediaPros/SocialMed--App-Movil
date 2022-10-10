@@ -14,8 +14,6 @@ import com.mediapros.socialmed.security.models.AuthenticateResponse
 import com.mediapros.socialmed.security.network.UserService
 import retrofit2.*
 
-const val EXTRA_TOKEN = "com.mediapros.socialmed.token"
-const val EXTRA_USER_ID = "com.mediapros.socialmed.userid"
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,10 +60,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goToHome(userId: Int,token: String, view: View) {
-        val intent = Intent(this, HomeActivity::class.java).apply {
-            putExtra(EXTRA_USER_ID, userId)
-            putExtra(EXTRA_TOKEN, "Bearer $token")
-        }
+        StateManager.userId = userId
+        StateManager.authToken = "Bearer $token"
+        val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
     }
 }

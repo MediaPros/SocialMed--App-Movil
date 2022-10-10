@@ -12,7 +12,7 @@ class Report (
     @SerializedName("content")
     var content: String,
     @SerializedName("date")
-    var date: Date,
+    var date: String,
     @SerializedName("user")
     var user: User
         )
