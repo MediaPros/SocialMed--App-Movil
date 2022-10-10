@@ -14,7 +14,6 @@ import com.mediapros.socialmed.security.models.AuthenticateResponse
 import com.mediapros.socialmed.security.network.UserService
 import retrofit2.*
 
-const val EXTRA_TOKEN = "com.mediapros.socialmed.token"
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                 response: Response<AuthenticateResponse>
             ) {
                 if (response.isSuccessful)
-                    goToHome(response.body()!!.token, view)
+                    goToHome(response.body()!!.id,response.body()!!.token, view)
                 else
                     Toast.makeText(this@MainActivity, "Error al iniciar sesión", Toast.LENGTH_SHORT).show()
             }
@@ -60,10 +59,10 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun goToHome(token: String, view: View) {
-        val intent = Intent(this, HomeActivity::class.java).apply {
-            putExtra(EXTRA_TOKEN, "Bearer $token")
-        }
+    private fun goToHome(userId: Int,token: String, view: View) {
+        StateManager.userId = userId
+        StateManager.authToken = "Bearer $token"
+        val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
     }
 }

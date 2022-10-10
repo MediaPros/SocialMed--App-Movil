@@ -15,4 +15,8 @@
     <string name="biography">Biografía</string>
     <string name="doc_pic">Doc pic</string>
     <string name="doctores_recomendados">Doctores recomendados</string>
+    <string name="report_error">Reporta un error</string>
+    <string name="title">Título</string>
+    <string name="content">Contenido</string>
+    <string name="send">Enviar</string>
 </resources>
