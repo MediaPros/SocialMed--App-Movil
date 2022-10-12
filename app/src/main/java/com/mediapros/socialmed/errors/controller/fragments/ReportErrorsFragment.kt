@@ -1,13 +1,13 @@
 package com.mediapros.socialmed.errors.controller.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.mediapros.socialmed.R
 import com.mediapros.socialmed.RetrofitBuilder
 import com.mediapros.socialmed.StateManager
@@ -17,6 +17,7 @@ import com.mediapros.socialmed.errors.network.ReportService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 
 class ReportErrorsFragment : Fragment() {
@@ -48,13 +49,13 @@ class ReportErrorsFragment : Fragment() {
 
         val reportService: ReportService = retrofit.create(ReportService::class.java)
 
-        val dateExample = "2022-09-28T06:08:22.534Z"
+        val date = StateManager.getJSDate(Date())
 
         val request = reportService.createReport(
             SaveReportResource(
                 etReportTitle.text.toString(),
                 etReportContent.text.toString(),
-                dateExample,
+                date,
                 userId), token)
 
         request.enqueue(object : Callback<Report> {
