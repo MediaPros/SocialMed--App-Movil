@@ -14,6 +14,7 @@ import com.mediapros.socialmed.R
 import com.mediapros.socialmed.shared.RetrofitBuilder
 import com.mediapros.socialmed.forums.adapter.ForumAdapter
 import com.mediapros.socialmed.forums.controller.activities.CreateForumActivity
+import com.mediapros.socialmed.forums.controller.activities.ForumDetailsActivity
 import com.mediapros.socialmed.forums.models.Forum
 import com.mediapros.socialmed.forums.network.ForumService
 import com.mediapros.socialmed.shared.OnItemClickListener
@@ -81,6 +82,8 @@ class ForumsFragment : Fragment(), OnItemClickListener<Forum> {
     }
 
     override fun onItemClicked(value: Forum) {
-
+        StateManager.selectedForum = value
+        val intent = Intent(context, ForumDetailsActivity::class.java)
+        startActivity(intent)
     }
 }
