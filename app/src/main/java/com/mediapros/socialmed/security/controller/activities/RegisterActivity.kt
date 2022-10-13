@@ -5,9 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import com.mediapros.socialmed.R
-import com.mediapros.socialmed.RetrofitBuilder
+import com.mediapros.socialmed.shared.RetrofitBuilder
 import com.mediapros.socialmed.security.models.RegisterRequest
 import com.mediapros.socialmed.security.network.UserService
 import retrofit2.*

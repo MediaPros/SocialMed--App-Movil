@@ -12,6 +12,8 @@ import com.mediapros.socialmed.security.controller.activities.RegisterActivity
 import com.mediapros.socialmed.security.models.AuthenticateRequest
 import com.mediapros.socialmed.security.models.AuthenticateResponse
 import com.mediapros.socialmed.security.network.UserService
+import com.mediapros.socialmed.shared.RetrofitBuilder
+import com.mediapros.socialmed.shared.StateManager
 import retrofit2.*
 
 

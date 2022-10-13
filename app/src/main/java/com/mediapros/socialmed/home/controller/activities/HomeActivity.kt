@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mediapros.socialmed.R
 import com.mediapros.socialmed.errors.controller.fragments.ReportErrorsFragment
+import com.mediapros.socialmed.forums.controller.fragments.ForumsFragment
 import com.mediapros.socialmed.home.controller.fragments.HomeFragment
 
 class HomeActivity : AppCompatActivity() {
@@ -34,6 +35,7 @@ class HomeActivity : AppCompatActivity() {
     private fun getFragmentFor(item: MenuItem): Fragment {
         return when(item.itemId) {
             R.id.menu_home -> HomeFragment()
+            R.id.menu_forum -> ForumsFragment()
             R.id.menu_errors -> ReportErrorsFragment()
             else -> HomeFragment()
         }

@@ -1,6 +1,4 @@
-package com.mediapros.socialmed;
-
-import com.mediapros.socialmed.errors.network.ReportService;
+package com.mediapros.socialmed.shared;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

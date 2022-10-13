@@ -9,8 +9,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mediapros.socialmed.R
-import com.mediapros.socialmed.RetrofitBuilder
-import com.mediapros.socialmed.StateManager
+import com.mediapros.socialmed.shared.RetrofitBuilder
+import com.mediapros.socialmed.shared.StateManager
 import com.mediapros.socialmed.errors.models.Report
 import com.mediapros.socialmed.errors.models.SaveReportResource
 import com.mediapros.socialmed.errors.network.ReportService

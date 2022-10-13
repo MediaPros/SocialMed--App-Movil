@@ -7,6 +7,10 @@
         android:icon="@mipmap/home_icon"
         android:title="@string/inicio" />
     <item
+        android:id="@+id/menu_forum"
+        android:icon="@android:drawable/stat_notify_chat"
+        android:title="@string/forum" />
+    <item
         android:id="@+id/menu_errors"
         android:icon="@android:drawable/stat_notify_error"
         android:title="@string/report_error" />
