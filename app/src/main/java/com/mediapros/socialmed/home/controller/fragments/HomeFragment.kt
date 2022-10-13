@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mediapros.socialmed.R
-import com.mediapros.socialmed.RetrofitBuilder
-import com.mediapros.socialmed.StateManager
+import com.mediapros.socialmed.shared.RetrofitBuilder
+import com.mediapros.socialmed.shared.StateManager
 import com.mediapros.socialmed.home.adapter.RecommendedDoctorAdapter
 import com.mediapros.socialmed.security.models.User
 import com.mediapros.socialmed.security.network.UserService

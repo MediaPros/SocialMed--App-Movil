@@ -1,4 +1,4 @@
-package com.mediapros.socialmed
+package com.mediapros.socialmed.shared
 
 import java.text.SimpleDateFormat
 import java.util.*

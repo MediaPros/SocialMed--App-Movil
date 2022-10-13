@@ -11,6 +11,9 @@ interface UserService {
     @GET("api/v1/users")
     fun getAllUsers(@Header("Authorization") token: String): Call<List<User>>
 
+    @GET("api/v1/users/{userId}")
+    fun getUserById(@Header("Authorization") token: String, @Path("userId") userId: Int): Call<User>
+
     @POST("api/v1/users/sign-in")
     fun signIn(@Body request: AuthenticateRequest): Call<AuthenticateResponse>
 
