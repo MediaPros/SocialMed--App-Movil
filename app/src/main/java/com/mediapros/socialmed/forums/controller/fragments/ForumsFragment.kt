@@ -1,16 +1,19 @@
 package com.mediapros.socialmed.forums.controller.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mediapros.socialmed.R
 import com.mediapros.socialmed.shared.RetrofitBuilder
 import com.mediapros.socialmed.forums.adapter.ForumAdapter
+import com.mediapros.socialmed.forums.controller.activities.CreateForumActivity
 import com.mediapros.socialmed.forums.models.Forum
 import com.mediapros.socialmed.forums.network.ForumService
 import com.mediapros.socialmed.shared.OnItemClickListener
@@ -32,10 +35,24 @@ class ForumsFragment : Fragment(), OnItemClickListener<Forum> {
         return inflater.inflate(R.layout.fragment_forums, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadForums()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val btAddForum = view.findViewById<ImageButton>(R.id.btAddForum)
         recyclerView = view.findViewById(R.id.rvForums)
         loadForums()
+        btAddForum.setOnClickListener {
+            goToCreateForumActivity()
+        }
+    }
+
+    private fun goToCreateForumActivity() {
+        val intent = Intent(context, CreateForumActivity::class.java)
+        startActivity(intent)
     }
 
     private fun loadForums() {
