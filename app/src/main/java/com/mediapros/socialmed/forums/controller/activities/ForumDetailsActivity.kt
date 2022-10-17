@@ -2,13 +2,16 @@ package com.mediapros.socialmed.forums.controller.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mediapros.socialmed.R
 import com.mediapros.socialmed.forums.adapter.CommentAdapter
+import com.mediapros.socialmed.forums.controller.dialogs.CreateCommentDialog
 import com.mediapros.socialmed.forums.models.Comment
+import com.mediapros.socialmed.forums.models.SaveCommentResource
 import com.mediapros.socialmed.forums.network.CommentService
 import com.mediapros.socialmed.security.models.User
 import com.mediapros.socialmed.security.network.UserService
@@ -18,6 +21,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.create
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ForumDetailsActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
@@ -28,8 +33,59 @@ class ForumDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forum_details)
         recyclerView = findViewById(R.id.rvComments)
+        val btCreateComment = findViewById<ImageButton>(R.id.btCreateComment)
         loadForumDetails()
         loadComments()
+
+        btCreateComment.setOnClickListener {
+            showCreateCommentDialog()
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadForumDetails()
+        loadComments()
+    }
+
+    private fun showCreateCommentDialog() {
+        CreateCommentDialog(
+            onSendClickListener = { comment ->
+                createComment(comment)
+            }
+        ).show(supportFragmentManager, "commentDialog")
+    }
+
+    private fun createComment(comment: String) {
+        val retrofit = RetrofitBuilder.build()
+        val commentService = retrofit.create(CommentService::class.java)
+
+        val request = commentService.createComment(StateManager.authToken,
+            SaveCommentResource(
+                StateManager.getJSDate(Date()),
+                comment,
+                StateManager.userId,
+                forum.id
+            )
+        )
+
+        request.enqueue(object : Callback<Comment> {
+            override fun onResponse(call: Call<Comment>, response: Response<Comment>) {
+                if (response.isSuccessful)
+                {
+                    Toast.makeText(this@ForumDetailsActivity, "Comentario creado.", Toast.LENGTH_LONG).show()
+                    loadComments()
+                }
+                else
+                    Toast.makeText(this@ForumDetailsActivity, "Error al crear comentario.", Toast.LENGTH_LONG).show()
+            }
+
+            override fun onFailure(call: Call<Comment>, t: Throwable) {
+                Toast.makeText(this@ForumDetailsActivity, "Error al crear comentario: ${t.message}", Toast.LENGTH_LONG).show()
+            }
+
+        })
     }
 
     private fun loadComments() {
