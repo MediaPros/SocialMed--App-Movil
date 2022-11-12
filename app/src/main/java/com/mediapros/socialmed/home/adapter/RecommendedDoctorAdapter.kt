@@ -13,6 +13,7 @@ import com.mediapros.socialmed.security.models.User
 import com.mediapros.socialmed.shared.OnItemClickListener
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
+import org.apache.commons.validator.routines.UrlValidator
 
 class RecommendedDoctorAdapter(val doctors: List<User>, private val context: Context, private val  itemClickListener: OnItemClickListener<User>):
     RecyclerView.Adapter<RecommendedDoctorAdapter.Prototype>() {
@@ -32,7 +33,16 @@ class RecommendedDoctorAdapter(val doctors: List<User>, private val context: Con
             }
             val picBuilder = Picasso.Builder(context)
             picBuilder.downloader(OkHttp3Downloader(context))
-            picBuilder.build().load(doctor.image).into(ivDoctorPic)
+            val urlValidator = UrlValidator()
+            if (urlValidator.isValid(doctor.image)) {
+                try {
+                    picBuilder.build().load(doctor.image).into(ivDoctorPic)
+                }
+                catch (e: Exception) {
+                    println("Imagen no existe.")
+                }
+            }
+            else println("URL inválida.")
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Prototype {

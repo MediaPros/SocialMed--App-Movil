@@ -8,6 +8,7 @@ import com.mediapros.socialmed.R
 import com.mediapros.socialmed.shared.StateManager
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
+import org.apache.commons.validator.routines.UrlValidator
 
 class UserProfileActivity : AppCompatActivity() {
     val user = StateManager.selectedDoctor
@@ -30,9 +31,19 @@ class UserProfileActivity : AppCompatActivity() {
         val picBuilder = Picasso.Builder(this)
         picBuilder.downloader(OkHttp3Downloader(this))
 
+        val urlValidator = UrlValidator()
+        if (urlValidator.isValid(user.image)) {
+            try {
+                picBuilder.build().load(user.image).into(ivProfilePic)
+            }
+            catch (e: Exception) {
+                println("Imagen no existe.")
+            }
+        }
+        else println("URL inválida.")
+
         tvProfileName.text = user.name
         tvProfileLastname.text = user.lastName
-        picBuilder.build().load(user.image).into(ivProfilePic)
         tvProfileAge.text = "Edad: ${user.age}"
         tvProfileSpecialist.text = "Especialidad: ${user.specialist}"
         tvProfileWorkplace.text = "Trabaja en: ${user.workPlace}"
