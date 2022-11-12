@@ -1,5 +1,6 @@
 package com.mediapros.socialmed.home.controller.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,14 +12,16 @@ import com.mediapros.socialmed.R
 import com.mediapros.socialmed.shared.RetrofitBuilder
 import com.mediapros.socialmed.shared.StateManager
 import com.mediapros.socialmed.home.adapter.RecommendedDoctorAdapter
+import com.mediapros.socialmed.interconsultation.activities.UserProfileActivity
 import com.mediapros.socialmed.security.models.User
 import com.mediapros.socialmed.security.network.UserService
+import com.mediapros.socialmed.shared.OnItemClickListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), OnItemClickListener<User> {
 
     var recommendedDoctors: List<User> = ArrayList()
     lateinit var rvRecommendedDoctors: RecyclerView
@@ -51,7 +54,7 @@ class HomeFragment : Fragment() {
                 if (response.isSuccessful) {
                     recommendedDoctors = response.body()!!
                     rvRecommendedDoctors.layoutManager = LinearLayoutManager(context)
-                    rvRecommendedDoctors.adapter = RecommendedDoctorAdapter(recommendedDoctors, context!!)
+                    rvRecommendedDoctors.adapter = RecommendedDoctorAdapter(recommendedDoctors, context!!, this@HomeFragment)
                 }
                 else {
                     println("No se pudo obtener a los usuarios.")
@@ -67,5 +70,11 @@ class HomeFragment : Fragment() {
         })
 
 
+    }
+
+    override fun onItemClicked(value: User) {
+        StateManager.selectedDoctor = value
+        val intent = Intent(context, UserProfileActivity::class.java)
+        startActivity(intent)
     }
 }
