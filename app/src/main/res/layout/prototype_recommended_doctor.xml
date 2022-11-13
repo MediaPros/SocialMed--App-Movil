@@ -22,8 +22,8 @@
             android:contentDescription="@string/doc_pic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ImageContrastCheck"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:srcCompat="@mipmap/profile_pic"
+            tools:ignore="ImageContrastCheck" />
 
         <TextView
             android:id="@+id/tvRecDocName"
