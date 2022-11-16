@@ -8,7 +8,7 @@ import java.util.*
 
 object StateManager {
     lateinit var authToken: String
-    var userId: Int = -1
+    var loggedUserId: Int = -1
     lateinit var selectedForum: Forum
     lateinit var selectedDoctor: User
 

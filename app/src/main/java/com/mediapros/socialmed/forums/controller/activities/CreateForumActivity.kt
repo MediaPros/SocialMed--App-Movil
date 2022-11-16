@@ -14,7 +14,6 @@ import com.mediapros.socialmed.shared.StateManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 import java.util.*
 
 class CreateForumActivity : AppCompatActivity() {
@@ -41,7 +40,7 @@ class CreateForumActivity : AppCompatActivity() {
             SaveForumResource(title,
                 content,
                 date,
-                StateManager.userId))
+                StateManager.loggedUserId))
 
         request.enqueue(object : Callback<Forum> {
             override fun onResponse(call: Call<Forum>, response: Response<Forum>) {

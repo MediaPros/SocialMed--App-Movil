@@ -12,7 +12,7 @@ import com.mediapros.socialmed.R
 import com.mediapros.socialmed.shared.RetrofitBuilder
 import com.mediapros.socialmed.shared.StateManager
 import com.mediapros.socialmed.home.adapter.RecommendedDoctorAdapter
-import com.mediapros.socialmed.interconsultation.activities.UserProfileActivity
+import com.mediapros.socialmed.interconsultation.controller.activities.UserProfileActivity
 import com.mediapros.socialmed.security.models.User
 import com.mediapros.socialmed.security.network.UserService
 import com.mediapros.socialmed.shared.OnItemClickListener
@@ -37,6 +37,11 @@ class HomeFragment : Fragment(), OnItemClickListener<User> {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rvRecommendedDoctors = view.findViewById(R.id.rvRecommendedDoctors)
+        loadRecommendedDoctors()
+    }
+
+    override fun onResume() {
+        super.onResume()
         loadRecommendedDoctors()
     }
 

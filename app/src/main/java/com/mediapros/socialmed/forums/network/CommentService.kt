@@ -11,4 +11,7 @@ interface CommentService {
 
     @POST("api/v1/comments")
     fun createComment(@Header("Authorization") token: String, @Body resource: SaveCommentResource): Call<Comment>
+
+    @DELETE("api/v1/comments/{id}")
+    fun deleteComment(@Header("Authorization") token: String, @Path("id") id: Int): Call<Comment>
 }

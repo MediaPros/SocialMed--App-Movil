@@ -17,7 +17,7 @@
         android:theme="@style/Theme.SocialMed"
         tools:targetApi="31">
         <activity
-            android:name=".interconsultation.activities.UserProfileActivity"
+            android:name=".interconsultation.controller.activities.UserProfileActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

@@ -4,24 +4,28 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.mediapros.socialmed.R
 import com.mediapros.socialmed.forums.models.Comment
+import com.mediapros.socialmed.forums.network.CommentService
 import com.mediapros.socialmed.security.models.User
 import com.mediapros.socialmed.security.network.UserService
+import com.mediapros.socialmed.shared.OnItemClickListener
 import com.mediapros.socialmed.shared.RetrofitBuilder
 import com.mediapros.socialmed.shared.StateManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CommentAdapter(private val comments: List<Comment>, private val context: Context)
+class CommentAdapter(private val comments: List<Comment>, private val context: Context, private val itemClickListener:OnItemClickListener<Comment>)
     :RecyclerView.Adapter<CommentAdapter.Prototype>(){
     class Prototype(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val tvCommentAuthor = itemView.findViewById<TextView>(R.id.tvCommentAuthor)
         private val tvCommentContent = itemView.findViewById<TextView>(R.id.tvCommentContent)
+        private val btDeleteComment = itemView.findViewById<ImageButton>(R.id.btDeleteComment)
 
         private fun getAuthorName(userId: Int, context: Context) {
             val retrofit = RetrofitBuilder.build()
@@ -45,9 +49,15 @@ class CommentAdapter(private val comments: List<Comment>, private val context: C
             })
         }
 
-        fun bind(comment: Comment, context: Context) {
+        fun bind(comment: Comment, context: Context, itemClickListener: OnItemClickListener<Comment>) {
             getAuthorName(comment.userId, context)
             tvCommentContent.text = comment.content
+            if (comment.userId == StateManager.loggedUserId) {
+                btDeleteComment.visibility = View.VISIBLE
+                btDeleteComment.setOnClickListener {
+                    itemClickListener.onItemClicked(comment)
+                }
+            }
         }
     }
 
@@ -59,7 +69,7 @@ class CommentAdapter(private val comments: List<Comment>, private val context: C
     }
 
     override fun onBindViewHolder(holder: Prototype, position: Int) {
-        holder.bind(comments[position], context)
+        holder.bind(comments[position], context, itemClickListener)
     }
 
     override fun getItemCount(): Int {
