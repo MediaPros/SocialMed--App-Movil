@@ -42,7 +42,7 @@ class ReportErrorsFragment : Fragment() {
     private fun sendReport(view: View) {
         val etReportTitle = view.findViewById<EditText>(R.id.etReportTitle)
         val etReportContent = view.findViewById<EditText>(R.id.etReportContent)
-        val userId = StateManager.userId
+        val userId = StateManager.loggedUserId
         val token = StateManager.authToken
 
         val retrofit = RetrofitBuilder.build()

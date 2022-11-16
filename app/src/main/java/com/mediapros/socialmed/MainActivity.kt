@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goToHome(userId: Int,token: String, view: View) {
-        StateManager.userId = userId
+        StateManager.loggedUserId = userId
         StateManager.authToken = "Bearer $token"
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
