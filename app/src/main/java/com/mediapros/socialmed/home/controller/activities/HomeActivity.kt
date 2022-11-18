@@ -9,6 +9,7 @@ import com.mediapros.socialmed.R
 import com.mediapros.socialmed.errors.controller.fragments.ReportErrorsFragment
 import com.mediapros.socialmed.forums.controller.fragments.ForumsFragment
 import com.mediapros.socialmed.home.controller.fragments.HomeFragment
+import com.mediapros.socialmed.home.controller.fragments.MoreFragment
 
 class HomeActivity : AppCompatActivity() {
 
@@ -37,6 +38,7 @@ class HomeActivity : AppCompatActivity() {
             R.id.menu_home -> HomeFragment()
             R.id.menu_forum -> ForumsFragment()
             R.id.menu_errors -> ReportErrorsFragment()
+            R.id.menu_more -> MoreFragment()
             else -> HomeFragment()
         }
     }

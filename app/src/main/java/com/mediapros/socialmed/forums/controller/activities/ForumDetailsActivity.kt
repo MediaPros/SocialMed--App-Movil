@@ -14,17 +14,18 @@ import com.mediapros.socialmed.forums.controller.dialogs.CreateCommentDialog
 import com.mediapros.socialmed.forums.models.Comment
 import com.mediapros.socialmed.forums.models.Forum
 import com.mediapros.socialmed.forums.models.SaveCommentResource
+import com.mediapros.socialmed.forums.models.SavedForum
 import com.mediapros.socialmed.forums.network.CommentService
 import com.mediapros.socialmed.forums.network.ForumService
 import com.mediapros.socialmed.security.models.User
 import com.mediapros.socialmed.security.network.UserService
+import com.mediapros.socialmed.shared.AppDatabase
 import com.mediapros.socialmed.shared.OnItemClickListener
 import com.mediapros.socialmed.shared.RetrofitBuilder
 import com.mediapros.socialmed.shared.StateManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -32,6 +33,7 @@ class ForumDetailsActivity : AppCompatActivity(), OnItemClickListener<Comment> {
     lateinit var recyclerView: RecyclerView
     var comments: List<Comment> = ArrayList()
     val forum = StateManager.selectedForum
+    lateinit var author: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,11 +41,16 @@ class ForumDetailsActivity : AppCompatActivity(), OnItemClickListener<Comment> {
         recyclerView = findViewById(R.id.rvComments)
         val btDeleteForum = findViewById<ImageButton>(R.id.btDeleteForum)
         val btCreateComment = findViewById<ImageButton>(R.id.btCreateComment)
+        val btSaveForum = findViewById<ImageButton>(R.id.btSaveForum)
         loadForumDetails()
         loadComments()
 
         btCreateComment.setOnClickListener {
             showCreateCommentDialog()
+        }
+
+        btSaveForum.setOnClickListener {
+            saveForumOnDb()
         }
 
         if (forum.userId == StateManager.loggedUserId) {
@@ -52,6 +59,19 @@ class ForumDetailsActivity : AppCompatActivity(), OnItemClickListener<Comment> {
                 deleteForum()
             }
         }
+
+    }
+
+    private fun saveForumOnDb() {
+        val query = AppDatabase.getInstance(this).getSavedForumDao().getByForumIdAndTitle(forum.id, forum.title)
+        if (query.isEmpty()) {
+            AppDatabase.getInstance(this).getSavedForumDao().insertForum(
+                SavedForum(null, forum.id, forum.title, author, forum.content, forum.date)
+            )
+            Toast.makeText(this, "Entrada guardada en dispositivo.", Toast.LENGTH_LONG).show()
+        }
+        else
+            Toast.makeText(this, "La entrada ya está guardada en el dispositivo.", Toast.LENGTH_LONG).show()
 
     }
 
@@ -154,7 +174,7 @@ class ForumDetailsActivity : AppCompatActivity(), OnItemClickListener<Comment> {
 
         val tvForumDetTitle = findViewById<TextView>(R.id.tvForumDetTitle)
         val tvForumDetAuthor = findViewById<TextView>(R.id.tvForumDetAuthor)
-        val tvForumDetContent = findViewById<TextView>(R.id.tvForumDelContent)
+        val tvForumDetContent = findViewById<TextView>(R.id.tvForumDetContent)
 
         tvForumDetTitle.text = forum.title
         tvForumDetContent.text = forum.content
@@ -167,7 +187,8 @@ class ForumDetailsActivity : AppCompatActivity(), OnItemClickListener<Comment> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful)
                 {
-                    tvForumDetAuthor.text = "${response.body()!!.name} ${response.body()!!.lastName}"
+                    author = "${response.body()!!.name} ${response.body()!!.lastName}"
+                    tvForumDetAuthor.text = author
                 }
                 else
                     Toast.makeText(this@ForumDetailsActivity, "Error al obtener nombre del autor.", Toast.LENGTH_SHORT).show()

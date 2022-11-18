@@ -25,4 +25,7 @@
     <string name="forum">Foro</string>
     <string name="perfil">Perfil</string>
     <string name="recomendar">Recomendar</string>
+    <string name="mas">Más</string>
+    <string name="mas_opciones">Más opciones</string>
+    <string name="entradas_de_foro_guardadas">Entradas de foro guardadas</string>
 </resources>
