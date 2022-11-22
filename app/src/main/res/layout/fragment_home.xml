@@ -42,7 +42,7 @@
         android:layout_marginStart="132dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="133dp"
-        android:text="Chiste del día"
+        android:text="@string/chiste_del_dia"
         android:textColor="@color/socialmed_main"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -53,7 +53,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cvJoke"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
@@ -80,13 +80,15 @@
                 tools:text="Chiste" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/btSaveJoke"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
                 android:backgroundTint="@color/socialmed_main"
                 android:src="@android:drawable/ic_menu_save"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

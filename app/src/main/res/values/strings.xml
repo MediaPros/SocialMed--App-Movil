@@ -28,4 +28,6 @@
     <string name="mas">Más</string>
     <string name="mas_opciones">Más opciones</string>
     <string name="entradas_de_foro_guardadas">Entradas de foro guardadas</string>
+    <string name="chiste_del_dia">Chiste del día</string>
+    <string name="chistes_guardados">Chistes guardados</string>
 </resources>

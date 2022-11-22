@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,10 +16,12 @@ import com.mediapros.socialmed.shared.RetrofitBuilder
 import com.mediapros.socialmed.shared.StateManager
 import com.mediapros.socialmed.home.adapter.RecommendedDoctorAdapter
 import com.mediapros.socialmed.home.models.Joke
+import com.mediapros.socialmed.home.models.SavedJoke
 import com.mediapros.socialmed.home.network.JokeService
 import com.mediapros.socialmed.interconsultation.controller.activities.UserProfileActivity
 import com.mediapros.socialmed.security.models.User
 import com.mediapros.socialmed.security.network.UserService
+import com.mediapros.socialmed.shared.AppDatabase
 import com.mediapros.socialmed.shared.OnItemClickListener
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
@@ -28,6 +31,8 @@ class HomeFragment : Fragment(), OnItemClickListener<User> {
 
     var recommendedDoctors: List<User> = ArrayList()
     lateinit var rvRecommendedDoctors: RecyclerView
+    lateinit var joke: Joke
+    var jokeReceived: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,13 +45,16 @@ class HomeFragment : Fragment(), OnItemClickListener<User> {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rvRecommendedDoctors = view.findViewById(R.id.rvRecommendedDoctors)
+        val btSaveJoke = view.findViewById<ImageButton>(R.id.btSaveJoke)
         loadRecommendedDoctors()
         loadJoke(view)
+        btSaveJoke.setOnClickListener {
+            saveJokeOnDb()
+        }
     }
 
     private fun loadJoke(view: View) {
         val tvJoke = view.findViewById<TextView>(R.id.tvJoke)
-
         val retrofit = Retrofit.Builder()
             .baseUrl("https://icanhazdadjoke.com/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -58,7 +66,11 @@ class HomeFragment : Fragment(), OnItemClickListener<User> {
         request.enqueue(object : Callback<Joke> {
             override fun onResponse(call: Call<Joke>, response: Response<Joke>) {
                 if (response.isSuccessful)
-                    tvJoke.text = response.body()!!.text
+                {
+                    joke = response.body()!!
+                    tvJoke.text = joke.text
+                    jokeReceived = true
+                }
                 else
                     Toast.makeText(context, "Error al obtener chiste.", Toast.LENGTH_LONG).show()
             }
@@ -68,6 +80,18 @@ class HomeFragment : Fragment(), OnItemClickListener<User> {
             }
 
         })
+    }
+
+    private fun saveJokeOnDb() {
+        if (jokeReceived) {
+            val query = AppDatabase.getInstance(requireContext()).getSavedJokeDao().getByJokeId(joke.jokeId)
+            if (query.isEmpty()) {
+                AppDatabase.getInstance(requireContext()).getSavedJokeDao().insertJoke(SavedJoke(null, joke.jokeId, joke.text))
+                Toast.makeText(requireContext(), "Chiste guardado en dispositivo.", Toast.LENGTH_LONG).show()
+            }
+            else
+                Toast.makeText(requireContext(), "El chiste ya existe en el dispositivo.", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onResume() {
