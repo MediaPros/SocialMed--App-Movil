@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".forums.controller.activities.SavedForumsActivity">
+    tools:context=".home.controller.activities.SavedJokesActivity">
 
     <TextView
-        android:id="@+id/tvSavedForums"
+        android:id="@+id/tvSavedJokes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="@string/entradas_de_foro_guardadas"
+        android:text="@string/chistes_guardados"
         android:textColor="@color/socialmed_main"
         android:textSize="18sp"
         android:textStyle="bold|italic"
@@ -20,14 +20,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSavedForums"
+        android:id="@+id/rvSavedJokes"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:background="@color/rv_background"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSavedForums" />
+        app:layout_constraintTop_toBottomOf="@+id/tvSavedJokes" />
 </androidx.constraintlayout.widget.ConstraintLayout>
