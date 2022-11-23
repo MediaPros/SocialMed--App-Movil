@@ -1,5 +1,6 @@
 package com.mediapros.socialmed.interconsultation.controller.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,6 +12,10 @@ import com.mediapros.socialmed.R
 import com.mediapros.socialmed.interconsultation.models.Recommendation
 import com.mediapros.socialmed.interconsultation.models.SaveRecommendationResource
 import com.mediapros.socialmed.interconsultation.network.RecommendationService
+import com.mediapros.socialmed.security.controller.activities.EditLoginActivity
+import com.mediapros.socialmed.security.controller.activities.EditUserProfileActivity
+import com.mediapros.socialmed.security.models.User
+import com.mediapros.socialmed.security.network.UserService
 import com.mediapros.socialmed.shared.RetrofitBuilder
 import com.mediapros.socialmed.shared.StateManager
 import com.squareup.picasso.OkHttp3Downloader
@@ -19,7 +24,6 @@ import org.apache.commons.validator.routines.UrlValidator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 
 class UserProfileActivity : AppCompatActivity() {
     val user = StateManager.selectedDoctor
@@ -34,7 +38,18 @@ class UserProfileActivity : AppCompatActivity() {
             btRecommendDoctor.setOnClickListener {
                 recommendDoctor()
             }
+        }else{
+            val btEditProfile = findViewById<Button>(R.id.btEditarProfile)
+            btEditProfile.visibility = View.VISIBLE
+            btEditProfile.setOnClickListener {
+                editProfile()
+            }
         }
+    }
+
+    private fun editProfile(){
+        val intent = Intent(this, EditLoginActivity::class.java)
+        startActivity(intent)
     }
 
     private fun recommendDoctor() {
@@ -85,12 +100,42 @@ class UserProfileActivity : AppCompatActivity() {
         }
         else println("URL inválida.")
 
-        tvProfileName.text = user.name
-        tvProfileLastname.text = user.lastName
-        tvProfileAge.text = "Edad: ${user.age}"
-        tvProfileSpecialist.text = "Especialidad: ${user.specialist}"
-        tvProfileWorkplace.text = "Trabaja en: ${user.workPlace}"
-        tvProfileRec.text = "Recomendaciones: ${user.recommendation}"
-        tvProfileEmail.text = "Correo: ${user.email}"
+        if (user.id != StateManager.loggedUserId) {
+            tvProfileName.text = user.name
+            tvProfileLastname.text = user.lastName
+            tvProfileAge.text = "Edad: ${user.age}"
+            tvProfileSpecialist.text = "Especialidad: ${user.specialist}"
+            tvProfileWorkplace.text = "Trabaja en: ${user.workPlace}"
+            tvProfileRec.text = "Recomendaciones: ${user.recommendation}"
+            tvProfileEmail.text = "Correo: ${user.email}"
+        }else{
+            val token = StateManager.authToken
+            val retrofit = RetrofitBuilder.build()
+            val userService = retrofit.create(UserService::class.java)
+            val request = userService.getUserById(token, StateManager.loggedUserId)
+
+            request.enqueue(object : Callback<User> {
+                override fun onResponse(call: Call<User>, response: Response<User>) {
+                    if (response.isSuccessful)
+                    {
+                        tvProfileName.text = response.body()!!.name
+                        tvProfileLastname.text = response.body()!!.lastName
+                        tvProfileAge.text = "Edad: ${response.body()!!.age}"
+                        tvProfileSpecialist.text = "Especialidad: ${response.body()!!.specialist}"
+                        tvProfileWorkplace.text = "Trabaja en: ${response.body()!!.workPlace}"
+                        tvProfileRec.text = "Recomendaciones: ${response.body()!!.recommendation}"
+                        tvProfileEmail.text = "Correo: ${response.body()!!.email}"
+
+                    }
+                    else
+                        Toast.makeText(this@UserProfileActivity, "Error al obtener nombre del autor.", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onFailure(call: Call<User>, t: Throwable) {
+                    Toast.makeText(this@UserProfileActivity, "Error al obtener nombre del autor.", Toast.LENGTH_SHORT).show()
+                }
+
+            })
+        }
     }
 }

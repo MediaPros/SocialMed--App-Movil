@@ -30,4 +30,10 @@
     <string name="entradas_de_foro_guardadas">Entradas de foro guardadas</string>
     <string name="chiste_del_dia">Chiste del día</string>
     <string name="chistes_guardados">Chistes guardados</string>
+    <string name="editar">Editar</string>
+    <string name="edita_tu_perfil">Edita tu perfil</string>
+    <string name="title_activity_edit_login">EditLoginActivity</string>
+    <string name="ingrese_su_contrase_a">Ingrese su contraseña</string>
+    <string name="confirmar">Confirmar</string>
+
 </resources>

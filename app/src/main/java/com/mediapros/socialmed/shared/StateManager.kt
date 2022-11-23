@@ -13,6 +13,7 @@ object StateManager {
     lateinit var selectedForum: Forum
     lateinit var selectedSavedForum: SavedForum
     lateinit var selectedDoctor: User
+    var password: String = ""
 
     fun getJSDate(date: Date): String {
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")

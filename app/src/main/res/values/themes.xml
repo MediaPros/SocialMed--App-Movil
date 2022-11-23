@@ -13,4 +13,10 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/socialmed_status_bar</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="Theme.SocialMed.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.SocialMed.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.SocialMed.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
