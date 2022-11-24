@@ -16,8 +16,8 @@ interface UserService {
     fun signIn(@Body request: AuthenticateRequest): Call<AuthenticateResponse>
 
     @POST("api/v1/users/sign-up")
-    fun signUp(@Body request: RegisterRequest): Call<String>
+    fun signUp(@Body request: RegisterRequest): Call<RegisterUpdateResponse>
 
     @PUT("api/v1/users/{userId}")
-    fun editUser(@Header("Authorization") token: String, @Body request: EditRequest, @Path("userId") userId: Int): Call<User>
+    fun editUser(@Header("Authorization") token: String, @Body request: EditRequest, @Path("userId") userId: Int): Call<RegisterUpdateResponse>
 }

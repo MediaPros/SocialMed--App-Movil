@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.mediapros.socialmed.R
 import com.mediapros.socialmed.interconsultation.controller.activities.UserProfileActivity
 import com.mediapros.socialmed.security.models.EditRequest
+import com.mediapros.socialmed.security.models.RegisterUpdateResponse
 import com.mediapros.socialmed.security.models.User
 import com.mediapros.socialmed.security.network.UserService
 import com.mediapros.socialmed.shared.RetrofitBuilder
@@ -80,24 +81,36 @@ class EditUserProfileActivity : AppCompatActivity() {
             etPasswordEdit.text.toString()
         ), StateManager.loggedUserId)
 
-        request.enqueue(object : Callback<User> {
-            override fun onResponse(call: Call<User>, response: Response<User>) {
+        request.enqueue(object : Callback<RegisterUpdateResponse> {
+            override fun onResponse(call: Call<RegisterUpdateResponse>, response: Response<RegisterUpdateResponse>) {
                 if (response.isSuccessful)
                 {
                     Toast.makeText(this@EditUserProfileActivity, "Perfil editado correctamente.", Toast.LENGTH_LONG).show()
+                    StateManager.selectedDoctor = User(
+                        user.id,
+                        etNameEdit.text.toString(),
+                        etLastNameEdit.text.toString(),
+                        etAgeEdit.text.toString().toInt(),
+                        etImageEdit.text.toString(),
+                        etEmailEdit.text.toString(),
+                        etSpecialistEdit.text.toString(),
+                        user.recommendation,
+                        etWorkplaceEdit.text.toString(),
+                        etBiographyEdit.text.toString(),
+                    )
                     finish()
                 }
                 else
                     Toast.makeText(this@EditUserProfileActivity, "Error al editar el perfil", Toast.LENGTH_LONG).show()
             }
 
-            override fun onFailure(call: Call<User>, t: Throwable) {
+            override fun onFailure(call: Call<RegisterUpdateResponse>, t: Throwable) {
                 Toast.makeText(this@EditUserProfileActivity, "Error al conectar al server: ${t.message}", Toast.LENGTH_LONG).show()
             }
 
         })
 
-        val intent = Intent(this, UserProfileActivity::class.java)
-        startActivity(intent)
+        /*val intent = Intent(this, UserProfileActivity::class.java)
+        startActivity(intent)*/
     }
 }

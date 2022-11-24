@@ -26,7 +26,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class UserProfileActivity : AppCompatActivity() {
-    val user = StateManager.selectedDoctor
+    var user = StateManager.selectedDoctor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +45,12 @@ class UserProfileActivity : AppCompatActivity() {
                 editProfile()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        user = StateManager.selectedDoctor
+        loadUserData()
     }
 
     private fun editProfile(){
@@ -86,6 +92,7 @@ class UserProfileActivity : AppCompatActivity() {
         val tvProfileWorkplace = findViewById<TextView>(R.id.tvProfileWorkplace)
         val tvProfileRec = findViewById<TextView>(R.id.tvProfileRec)
         val tvProfileEmail = findViewById<TextView>(R.id.tvProfileEmail)
+        val tvProfileBiography = findViewById<TextView>(R.id.tvProfileBiography)
         val picBuilder = Picasso.Builder(this)
         picBuilder.downloader(OkHttp3Downloader(this))
 
@@ -100,42 +107,13 @@ class UserProfileActivity : AppCompatActivity() {
         }
         else println("URL inválida.")
 
-        if (user.id != StateManager.loggedUserId) {
-            tvProfileName.text = user.name
-            tvProfileLastname.text = user.lastName
-            tvProfileAge.text = "Edad: ${user.age}"
-            tvProfileSpecialist.text = "Especialidad: ${user.specialist}"
-            tvProfileWorkplace.text = "Trabaja en: ${user.workPlace}"
-            tvProfileRec.text = "Recomendaciones: ${user.recommendation}"
-            tvProfileEmail.text = "Correo: ${user.email}"
-        }else{
-            val token = StateManager.authToken
-            val retrofit = RetrofitBuilder.build()
-            val userService = retrofit.create(UserService::class.java)
-            val request = userService.getUserById(token, StateManager.loggedUserId)
-
-            request.enqueue(object : Callback<User> {
-                override fun onResponse(call: Call<User>, response: Response<User>) {
-                    if (response.isSuccessful)
-                    {
-                        tvProfileName.text = response.body()!!.name
-                        tvProfileLastname.text = response.body()!!.lastName
-                        tvProfileAge.text = "Edad: ${response.body()!!.age}"
-                        tvProfileSpecialist.text = "Especialidad: ${response.body()!!.specialist}"
-                        tvProfileWorkplace.text = "Trabaja en: ${response.body()!!.workPlace}"
-                        tvProfileRec.text = "Recomendaciones: ${response.body()!!.recommendation}"
-                        tvProfileEmail.text = "Correo: ${response.body()!!.email}"
-
-                    }
-                    else
-                        Toast.makeText(this@UserProfileActivity, "Error al obtener nombre del autor.", Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onFailure(call: Call<User>, t: Throwable) {
-                    Toast.makeText(this@UserProfileActivity, "Error al obtener nombre del autor.", Toast.LENGTH_SHORT).show()
-                }
-
-            })
-        }
+        tvProfileName.text = user.name
+        tvProfileLastname.text = user.lastName
+        tvProfileAge.text = "Edad: ${user.age}"
+        tvProfileSpecialist.text = "Especialidad: ${user.specialist}"
+        tvProfileWorkplace.text = "Trabaja en: ${user.workPlace}"
+        tvProfileRec.text = "Recomendaciones: ${user.recommendation}"
+        tvProfileEmail.text = "Correo: ${user.email}"
+        tvProfileBiography.text = "Biografía: ${user.biography}"
     }
 }
