@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.mediapros.socialmed.R
 import com.mediapros.socialmed.shared.RetrofitBuilder
 import com.mediapros.socialmed.security.models.RegisterRequest
+import com.mediapros.socialmed.security.models.RegisterUpdateResponse
 import com.mediapros.socialmed.security.network.UserService
 import retrofit2.*
 
@@ -49,16 +51,18 @@ class RegisterActivity : AppCompatActivity() {
             etPassword2.text.toString()
         ))
 
-        request.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+        request.enqueue(object : Callback<RegisterUpdateResponse> {
+            override fun onResponse(call: Call<RegisterUpdateResponse>, response: Response<RegisterUpdateResponse>) {
                 if(response.isSuccessful) {
-                    val tvRegister2 = findViewById<TextView>(R.id.tvRegister2)
-                    tvRegister2.text = response.body()
+                    Toast.makeText(this@RegisterActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
+                    finish()
                 }
+                else
+                    Toast.makeText(this@RegisterActivity, "Error al registrar usuario: ${response.message()}", Toast.LENGTH_LONG).show()
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                TODO("Not implemented")
+            override fun onFailure(call: Call<RegisterUpdateResponse>, t: Throwable) {
+                Toast.makeText(this@RegisterActivity, "Error al registrar usuario: ${t.message}", Toast.LENGTH_LONG).show()
             }
 
         })

@@ -17,7 +17,44 @@
         android:theme="@style/Theme.SocialMed"
         tools:targetApi="31">
         <activity
-            android:name=".interconsultation.activities.UserProfileActivity"
+            android:name=".security.controller.activities.EditLoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_edit_login"
+            android:theme="@style/Theme.SocialMed.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".security.controller.activities.EditUserProfileActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".home.controller.activities.SavedJokesActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".forums.controller.activities.SavedForumDetailsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".forums.controller.activities.SavedForumsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".interconsultation.controller.activities.UserProfileActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
