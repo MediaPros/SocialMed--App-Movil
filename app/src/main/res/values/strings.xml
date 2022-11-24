@@ -35,5 +35,7 @@
     <string name="title_activity_edit_login">EditLoginActivity</string>
     <string name="ingrese_su_contrase_a">Ingrese su contraseña</string>
     <string name="confirmar">Confirmar</string>
+    <string name="url_de_imagen_de_perfil">URL de imagen de perfil</string>
+    <string name="acepto_terminos_y_condiciones">Acepto términos y condiciones</string>
 
 </resources>

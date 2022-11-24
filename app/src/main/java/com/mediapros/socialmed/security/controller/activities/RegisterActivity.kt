@@ -3,6 +3,7 @@ package com.mediapros.socialmed.security.controller.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -34,37 +35,42 @@ class RegisterActivity : AppCompatActivity() {
         val etSpecialist = findViewById<EditText>(R.id.etSpecialist)
         val etWorkplace = findViewById<EditText>(R.id.etWorkplace)
         val etBiography = findViewById<EditText>(R.id.etBiography)
+        val checkBoxTerms = findViewById<CheckBox>(R.id.checkBoxTerms)
 
-        val retrofit = RetrofitBuilder.build()
+        if (checkBoxTerms.isChecked) {
+            val retrofit = RetrofitBuilder.build()
 
-        val userService: UserService = retrofit.create(UserService::class.java)
+            val userService: UserService = retrofit.create(UserService::class.java)
 
-        val request = userService.signUp(RegisterRequest(
-            etName.text.toString(),
-            etLastName.text.toString(),
-            etAge.text.toString().toInt(),
-            etImage.text.toString(),
-            etSpecialist.text.toString(),
-            etWorkplace.text.toString(),
-            etBiography.text.toString(),
-            etEmail2.text.toString(),
-            etPassword2.text.toString()
-        ))
+            val request = userService.signUp(RegisterRequest(
+                etName.text.toString(),
+                etLastName.text.toString(),
+                etAge.text.toString().toInt(),
+                etImage.text.toString(),
+                etSpecialist.text.toString(),
+                etWorkplace.text.toString(),
+                etBiography.text.toString(),
+                etEmail2.text.toString(),
+                etPassword2.text.toString()
+            ))
 
-        request.enqueue(object : Callback<RegisterUpdateResponse> {
-            override fun onResponse(call: Call<RegisterUpdateResponse>, response: Response<RegisterUpdateResponse>) {
-                if(response.isSuccessful) {
-                    Toast.makeText(this@RegisterActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
-                    finish()
+            request.enqueue(object : Callback<RegisterUpdateResponse> {
+                override fun onResponse(call: Call<RegisterUpdateResponse>, response: Response<RegisterUpdateResponse>) {
+                    if(response.isSuccessful) {
+                        Toast.makeText(this@RegisterActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
+                        finish()
+                    }
+                    else
+                        Toast.makeText(this@RegisterActivity, "Error al registrar usuario: ${response.message()}", Toast.LENGTH_LONG).show()
                 }
-                else
-                    Toast.makeText(this@RegisterActivity, "Error al registrar usuario: ${response.message()}", Toast.LENGTH_LONG).show()
-            }
 
-            override fun onFailure(call: Call<RegisterUpdateResponse>, t: Throwable) {
-                Toast.makeText(this@RegisterActivity, "Error al registrar usuario: ${t.message}", Toast.LENGTH_LONG).show()
-            }
+                override fun onFailure(call: Call<RegisterUpdateResponse>, t: Throwable) {
+                    Toast.makeText(this@RegisterActivity, "Error al registrar usuario: ${t.message}", Toast.LENGTH_LONG).show()
+                }
 
-        })
+            })
+        }
+        else
+            Toast.makeText(this, "Debe aceprtar los términos y condiciones para registrarse.", Toast.LENGTH_LONG).show()
     }
 }
