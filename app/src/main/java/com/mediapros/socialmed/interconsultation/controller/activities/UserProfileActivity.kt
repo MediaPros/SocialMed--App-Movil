@@ -1,5 +1,6 @@
 package com.mediapros.socialmed.interconsultation.controller.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,6 +12,10 @@ import com.mediapros.socialmed.R
 import com.mediapros.socialmed.interconsultation.models.Recommendation
 import com.mediapros.socialmed.interconsultation.models.SaveRecommendationResource
 import com.mediapros.socialmed.interconsultation.network.RecommendationService
+import com.mediapros.socialmed.security.controller.activities.EditLoginActivity
+import com.mediapros.socialmed.security.controller.activities.EditUserProfileActivity
+import com.mediapros.socialmed.security.models.User
+import com.mediapros.socialmed.security.network.UserService
 import com.mediapros.socialmed.shared.RetrofitBuilder
 import com.mediapros.socialmed.shared.StateManager
 import com.squareup.picasso.OkHttp3Downloader
@@ -19,10 +24,9 @@ import org.apache.commons.validator.routines.UrlValidator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 
 class UserProfileActivity : AppCompatActivity() {
-    val user = StateManager.selectedDoctor
+    var user = StateManager.selectedDoctor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +38,24 @@ class UserProfileActivity : AppCompatActivity() {
             btRecommendDoctor.setOnClickListener {
                 recommendDoctor()
             }
+        }else{
+            val btEditProfile = findViewById<Button>(R.id.btEditarProfile)
+            btEditProfile.visibility = View.VISIBLE
+            btEditProfile.setOnClickListener {
+                editProfile()
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        user = StateManager.selectedDoctor
+        loadUserData()
+    }
+
+    private fun editProfile(){
+        val intent = Intent(this, EditLoginActivity::class.java)
+        startActivity(intent)
     }
 
     private fun recommendDoctor() {
@@ -71,6 +92,7 @@ class UserProfileActivity : AppCompatActivity() {
         val tvProfileWorkplace = findViewById<TextView>(R.id.tvProfileWorkplace)
         val tvProfileRec = findViewById<TextView>(R.id.tvProfileRec)
         val tvProfileEmail = findViewById<TextView>(R.id.tvProfileEmail)
+        val tvProfileBiography = findViewById<TextView>(R.id.tvProfileBiography)
         val picBuilder = Picasso.Builder(this)
         picBuilder.downloader(OkHttp3Downloader(this))
 
@@ -92,5 +114,6 @@ class UserProfileActivity : AppCompatActivity() {
         tvProfileWorkplace.text = "Trabaja en: ${user.workPlace}"
         tvProfileRec.text = "Recomendaciones: ${user.recommendation}"
         tvProfileEmail.text = "Correo: ${user.email}"
+        tvProfileBiography.text = "Biografía: ${user.biography}"
     }
 }
